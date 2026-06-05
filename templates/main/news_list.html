@@ -7,14 +7,18 @@
       <h2 class="section-title">Новости</h2>
       <div class="row g-3">
         {% for n in page_obj %}
-          <div class="col-md-4">
-            <div class="card card-interactive h-100">
-              {% if n.image %}<img src="{{ n.image.url }}" class="card-img-top" alt="">{% endif %}
+          <div class="col-md-4 d-flex">
+            <div class="card card-interactive card-catalog">
+              {% if n.image %}
+                <img src="{{ n.image.url }}" class="card-img-top" alt="">
+              {% else %}
+                <div class="card-img-top card-img-empty" aria-hidden="true"></div>
+              {% endif %}
               <div class="card-body">
                 <div class="text-muted small mb-1">{{ n.created_at|date:"d.m.Y" }}</div>
                 <h5 class="card-title">{{ n.title }}</h5>
-                <p class="text-muted mb-3">{{ n.short_text }}</p>
-                <a class="stretched-link" href="{% url 'news_detail' n.slug %}">Читать</a>
+                <p class="text-muted card-text-grow mb-0">{{ n.short_text }}</p>
+                <a class="card-link-action" href="{% url 'news_detail' n.slug %}">Читать</a>
               </div>
             </div>
           </div>
@@ -39,4 +43,3 @@
     </div>
   </section>
 {% endblock %}
-
