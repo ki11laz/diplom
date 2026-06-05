@@ -2,11 +2,7 @@
 
 {% load static %}
 
-
-
 {% block title %}Главная — Карандаш{% endblock %}
-
-
 
 {% block content %}
 
@@ -68,8 +64,6 @@
 
   </section>
 
-
-
   <section class="py-5">
 
     <div class="container">
@@ -112,8 +106,6 @@
 
   </section>
 
-
-
   <section class="py-5 section-alt">
 
     <div class="container">
@@ -124,21 +116,25 @@
 
         {% for c in popular_courses %}
 
-          <div class="col-md-4">
+          <div class="col-md-4 d-flex">
 
-            <div class="card card-interactive h-100">
+            <div class="card card-interactive card-catalog">
 
-              {% if c.image %}<img src="{{ c.image.url }}" class="card-img-top" alt="">{% endif %}
+              {% if c.image %}
+                <img src="{{ c.image.url }}" class="card-img-top" alt="">
+              {% else %}
+                <div class="card-img-top card-img-empty" aria-hidden="true"></div>
+              {% endif %}
 
               <div class="card-body">
 
                 <h5 class="card-title">{{ c.title }}</h5>
 
-                <p class="text-muted mb-2">{{ c.short_description }}</p>
+                <p class="text-muted card-text-grow mb-2">{{ c.short_description }}</p>
 
-                <div class="fw-semibold mb-3">{{ c.price }} ₽</div>
+                <div class="fw-semibold mb-2">{{ c.price }} ₽</div>
 
-                <a class="btn btn-primary btn-sm" href="{% url 'course_detail' c.slug %}">Подробнее</a>
+                <a class="btn btn-primary btn-sm align-self-start" href="{% url 'course_detail' c.slug %}">Подробнее</a>
 
               </div>
 
@@ -164,8 +160,6 @@
 
   </section>
 
-
-
   <section class="py-5">
 
     <div class="container">
@@ -176,11 +170,15 @@
 
         {% for n in last_news %}
 
-          <div class="col-md-4">
+          <div class="col-md-4 d-flex">
 
-            <div class="card card-interactive h-100">
+            <div class="card card-interactive card-catalog">
 
-              {% if n.image %}<img src="{{ n.image.url }}" class="card-img-top" alt="">{% endif %}
+              {% if n.image %}
+                <img src="{{ n.image.url }}" class="card-img-top" alt="">
+              {% else %}
+                <div class="card-img-top card-img-empty" aria-hidden="true"></div>
+              {% endif %}
 
               <div class="card-body">
 
@@ -188,9 +186,9 @@
 
                 <h5 class="card-title">{{ n.title }}</h5>
 
-                <p class="text-muted mb-3">{{ n.short_text }}</p>
+                <p class="text-muted card-text-grow mb-0">{{ n.short_text }}</p>
 
-                <a class="stretched-link" href="{% url 'news_detail' n.slug %}">Читать</a>
+                <a class="card-link-action" href="{% url 'news_detail' n.slug %}">Читать</a>
 
               </div>
 
@@ -215,8 +213,6 @@
     </div>
 
   </section>
-
-
 
   <section class="py-5 section-alt">
 
@@ -263,8 +259,6 @@
     </div>
 
   </section>
-
-
 
   <section class="py-5 apply-section" id="applyForm">
 
@@ -351,8 +345,7 @@
             {% endif %}
 
           </div>
-
-        </div>
+          </div>
 
       </div>
 
@@ -361,5 +354,3 @@
   </section>
 
 {% endblock %}
-
-
