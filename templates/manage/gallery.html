@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Управление — Галерея{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Управление галереей</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">{% include 'manage/_nav.html' %}</div>
+        <div class="col-lg-9">
+          <div class="card p-4 mb-3">
+            <div class="fw-semibold mb-3">Добавить новую работу</div>
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Название</label>
+                  {{ form.title }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Картинка</label>
+                  {{ form.image }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Автор (пользователь)</label>
+                  {{ form.student }}
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Техника</label>
+                  {{ form.technique }}
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Курс</label>
+                  {{ form.course }}
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Статус</label>
+                  {{ form.status }}
+                </div>
+                <div class="col-12">
+                  <div class="form-check">
+                    {{ form.is_visible }}
+                    <label class="form-check-label">Показывать в галерее</label>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-primary mt-3" type="submit">Добавить</button>
+            </form>
+          </div>
+
+          <div class="row g-3">
+            {% for w in works %}
+              <div class="col-6 col-lg-3">
+                <div class="card h-100">
+                  <img src="{{ w.image.url }}" alt="" style="height:170px;object-fit:cover;border-radius:14px 14px 0 0;">
+                  <div class="card-body">
+                    <div class="fw-semibold">{{ w.title }}</div>
+                    <div class="d-flex gap-2 flex-wrap mt-2">
+                      <a class="btn btn-sm btn-outline-secondary" href="{% url 'manage_work_toggle' w.id %}">{% if w.is_visible %}Скрыть{% else %}Показать{% endif %}</a>
+                      <a class="btn btn-sm btn-outline-primary" href="{% url 'manage_work_edit' w.id %}">Редактировать</a>
+                      <a class="btn btn-sm btn-outline-danger" onclick="return confirm('Вы уверены?')" href="{% url 'manage_work_delete' w.id %}">Удалить</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col-12 text-center text-muted">Работ пока нет.</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

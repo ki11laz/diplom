@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Управление — Модерация работ{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Модерирование работ</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">{% include 'manage/_nav.html' %}</div>
+        <div class="col-lg-9">
+          <form method="get" class="row g-3 align-items-end mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Статус</label>
+              <select class="form-select" name="status" onchange="this.form.submit()">
+                <option value="">Все</option>
+                {% for val,label in status_choices %}
+                  <option value="{{ val }}" {% if status == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </form>
+
+          <div class="card p-0">
+            <div class="table-responsive">
+              <table class="table table-striped align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Картинка</th>
+                    <th>Название</th>
+                    <th>Ученик</th>
+                    <th>Дата</th>
+                    <th>Статус</th>
+                    <th>Комментарий</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for w in items %}
+                    <tr>
+                      <td style="width:120px;">
+                        <img src="{{ w.image.url }}" alt="" style="width:110px;height:70px;object-fit:cover;border-radius:10px;">
+                      </td>
+                      <td>{{ w.title }}</td>
+                      <td>{{ w.student|default:"—" }}</td>
+                      <td>{{ w.created_at|date:"d.m.Y H:i" }}</td>
+                      <td style="width:190px;">
+                        <form method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="work_id" value="{{ w.id }}">
+                          <select class="form-select" name="status" onchange="this.form.submit()">
+                            {% for val,label in w.STATUS_CHOICES %}
+                              <option value="{{ val }}" {% if w.status == val %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                          </select>
+                        </form>
+                      </td>
+                      <td style="min-width:220px;">
+                        <form method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="work_id" value="{{ w.id }}">
+                          <textarea class="form-control" name="admin_comment" rows="2" placeholder="Комментарий">{{ w.admin_comment }}</textarea>
+                          <input type="hidden" name="status" value="{{ w.status }}">
+                          <button class="btn btn-sm btn-outline-primary mt-2" type="submit">Сохранить</button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr><td colspan="6" class="text-center text-muted">Работ нет.</td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

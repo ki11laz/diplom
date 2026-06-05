@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Управление — Заявки{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Заявки</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">{% include 'manage/_nav.html' %}</div>
+        <div class="col-lg-9">
+          <form method="get" class="row g-3 align-items-end mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Статус</label>
+              <select class="form-select" name="status" onchange="this.form.submit()">
+                <option value="">Все</option>
+                {% for val,label in status_choices %}
+                  <option value="{{ val }}" {% if status == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </form>
+
+          <div class="card p-0">
+            <div class="table-responsive">
+              <table class="table table-striped align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Имя</th>
+                    <th>Телефон</th>
+                    <th>Email</th>
+                    <th>Курс</th>
+                    <th>Сообщение</th>
+                    <th>Дата</th>
+                    <th>Статус</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for a in items %}
+                    <tr>
+                      <td>{{ a.name }}</td>
+                      <td>{{ a.phone }}</td>
+                      <td>{{ a.email|default:"—" }}</td>
+                      <td>{% if a.course %}{{ a.course.title }}{% else %}—{% endif %}</td>
+                      <td class="text-muted">{{ a.message|default:"—"|truncatechars:60 }}</td>
+                      <td>{{ a.created_at|date:"d.m.Y H:i" }}</td>
+                      <td style="width:220px;">
+                        <form method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="app_id" value="{{ a.id }}">
+                          <select class="form-select" name="status" onchange="this.form.submit()">
+                            {% for val,label in a.STATUS_CHOICES %}
+                              <option value="{{ val }}" {% if a.status == val %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                          </select>
+                        </form>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr><td colspan="7" class="text-center text-muted">Заявок нет.</td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

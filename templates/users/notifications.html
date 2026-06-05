@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Уведомления — Карандаш{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Уведомления</h2>
+
+      <div class="card p-0">
+        <div class="list-group list-group-flush">
+          {% for n in items %}
+            <div class="list-group-item {% if not n.is_read %}bg-light{% endif %}">
+              <div class="d-flex justify-content-between gap-3">
+                <div>
+                  <div class="fw-semibold">{{ n.title }}</div>
+                  <div class="text-muted">{{ n.text }}</div>
+                </div>
+                <div class="text-muted small">{{ n.created_at|date:"d.m.Y H:i" }}</div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="list-group-item text-center text-muted">Уведомлений пока нет.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

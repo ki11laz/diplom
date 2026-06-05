@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Загрузить работу — Карандаш{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-7">
+          <div class="card p-4">
+            <h3 class="mb-3">Загрузить работу</h3>
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label">Название</label>
+                {{ form.title }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Картинка</label>
+                {{ form.image }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Описание</label>
+                {{ form.description }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">К какому курсу относится</label>
+                {{ form.course }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Техника</label>
+                {{ form.technique }}
+              </div>
+              <button class="btn btn-primary" type="submit">Отправить на модерацию</button>
+              <a class="btn btn-outline-secondary" href="{% url 'cabinet_works' %}">Назад</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

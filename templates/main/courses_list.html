@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Курсы — Карандаш{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Курсы</h2>
+
+      <form method="get" class="row g-3 align-items-end mb-3">
+        <div class="col-md-3">
+          <label class="form-label">Возрастная группа</label>
+          <select class="form-select" name="age" onchange="this.form.submit()">
+            <option value="">Все</option>
+            {% for val,label in age_choices %}
+              <option value="{{ val }}" {% if age == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Направление</label>
+          <select class="form-select" name="direction" onchange="this.form.submit()">
+            <option value="">Все</option>
+            {% for val,label in direction_choices %}
+              <option value="{{ val }}" {% if direction == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </form>
+
+      <div class="row g-3">
+        {% for c in page_obj %}
+          <div class="col-md-4">
+            <div class="card card-interactive h-100">
+              {% if c.image %}<img src="{{ c.image.url }}" class="card-img-top" alt="">{% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ c.title }}</h5>
+                <p class="text-muted">{{ c.short_description }}</p>
+                <div class="fw-semibold mb-3">{{ c.price }} ₽</div>
+                <a class="btn btn-primary" href="{% url 'course_detail' c.slug %}">Подробнее</a>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 text-muted text-center">Курсов не найдено.</div>
+        {% endfor %}
+      </div>
+
+      {% if page_obj.paginator.num_pages > 1 %}
+        <nav class="mt-4">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&age={{ age }}&direction={{ direction }}">Назад</a></li>
+            {% endif %}
+            <li class="page-item disabled"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&age={{ age }}&direction={{ direction }}">Вперёд</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
+

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Галерея — Карандаш{% endblock %}
+
+
+
+{% block content %}
+
+  <section class="py-5">
+
+    <div class="container">
+
+      <h2 class="section-title">Галерея</h2>
+
+
+
+      <form method="get" class="row g-3 align-items-end mb-4">
+
+        <div class="col-md-5">
+
+          <label class="form-label">Курс</label>
+
+          <select class="form-select" name="course" onchange="this.form.submit()">
+
+            <option value="">Все</option>
+
+            {% for c in courses %}
+
+              <option value="{{ c.id }}" {% if course_id == c.id|stringformat:'s' %}selected{% endif %}>{{ c.title }}</option>
+
+            {% endfor %}
+
+          </select>
+
+        </div>
+
+        <div class="col-md-4">
+
+          <label class="form-label">Техника</label>
+
+          <select class="form-select" name="technique" onchange="this.form.submit()">
+
+            <option value="">Все</option>
+
+            {% for val,label in technique_choices %}
+
+              <option value="{{ val }}" {% if technique == val %}selected{% endif %}>{{ label }}</option>
+
+            {% endfor %}
+
+          </select>
+
+        </div>
+
+      </form>
+
+
+
+      <div class="row g-3">
+
+        {% for w in items %}
+
+          <div class="col-6 col-lg-3">
+
+            <figure class="gallery-item mb-0">
+
+              <img src="{{ w.image.url }}" alt="{{ w.title }}">
+
+              <figcaption>
+
+                <span class="gallery-item-title">{{ w.title }}</span>
+
+                <span class="gallery-item-author">{{ w.author_display }}</span>
+
+              </figcaption>
+
+            </figure>
+
+          </div>
+
+        {% empty %}
+
+          <div class="col-12 text-muted">Работ не найдено.</div>
+
+        {% endfor %}
+
+      </div>
+
+    </div>
+
+  </section>
+
+{% endblock %}
+
+

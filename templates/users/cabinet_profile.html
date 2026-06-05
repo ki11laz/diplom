@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Личный кабинет — Мои данные{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Личный кабинет</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">
+          {% include 'users/_cabinet_sidebar.html' %}
+        </div>
+        <div class="col-lg-9">
+          <div class="card p-4">
+            <h4 class="mb-3">Мои данные</h4>
+
+            <div class="d-flex align-items-center gap-3 mb-4">
+              {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="" class="avatar-img" style="width:72px;height:72px;">
+              {% else %}
+                <div class="avatar-fallback" style="width:72px;height:72px;font-size:22px;">
+                  {{ user.username|first|upper }}
+                </div>
+              {% endif %}
+              <div>
+                <div class="fw-semibold">{{ user.get_full_name|default:user.username }}</div>
+                <div class="text-muted small">{{ user.email|default:"" }}</div>
+              </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Имя</label>
+                  {{ form.first_name }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  {{ form.email }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Телефон</label>
+                  {{ form.phone }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Аватар</label>
+                  {{ form.avatar }}
+                </div>
+              </div>
+              <button class="btn btn-primary mt-3" type="submit">Сохранить</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

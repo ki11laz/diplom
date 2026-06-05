@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}{{ item.title }} — Карандаш{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <div class="card p-4">
+        <div class="text-muted small mb-2">{{ item.created_at|date:"d.m.Y" }}</div>
+        <h2 class="mb-3">{{ item.title }}</h2>
+        {% if item.image %}
+          <img src="{{ item.image.url }}" alt="" class="mb-3" style="width:100%;max-height:420px;object-fit:cover;border-radius:14px;">
+        {% endif %}
+        <div class="text-muted">{{ item.text|linebreaksbr }}</div>
+      </div>
+
+      <div class="card p-4 mt-4">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h5 class="mb-0">Комментарии</h5>
+          <div class="text-muted small">{{ comments|length }}</div>
+        </div>
+
+        {% if user.is_authenticated %}
+          <form method="post" class="mb-4">
+            {% csrf_token %}
+            {{ form.text }}
+            <button class="btn btn-primary mt-3" type="submit">Отправить</button>
+          </form>
+        {% else %}
+          <div class="alert alert-info mb-4">Чтобы оставить комментарий, войдите в аккаунт.</div>
+        {% endif %}
+
+        <div class="vstack gap-3">
+          {% for c in comments %}
+            <div class="comment-row">
+              <div class="comment-avatar">
+                {% if c.user.avatar %}
+                  <img src="{{ c.user.avatar.url }}" alt="" class="avatar-img">
+                {% else %}
+                  <div class="avatar-fallback">{{ c.user.username|first|upper }}</div>
+                {% endif %}
+              </div>
+              <div class="flex-grow-1">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                  <div class="fw-semibold">{{ c.user.get_full_name|default:c.user.username }}</div>
+                  <div class="text-muted small">{{ c.created_at|date:"d.m.Y H:i" }}</div>
+                </div>
+                <div class="text-muted mt-1">{{ c.text|linebreaksbr }}</div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="text-muted">Комментариев пока нет.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

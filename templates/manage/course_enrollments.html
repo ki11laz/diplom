@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Управление — Записи на курс{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Записи на курс</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">{% include 'manage/_nav.html' %}</div>
+        <div class="col-lg-9">
+          <div class="card p-4 mb-3">
+            <div class="fw-semibold">{{ course.title }}</div>
+            <div class="text-muted">{{ course.get_direction_display }} · {{ course.get_age_group_display }}</div>
+          </div>
+
+          <div class="card p-0">
+            <div class="table-responsive">
+              <table class="table table-striped align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Ученик</th>
+                    <th>Дата</th>
+                    <th>Статус</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for e in enrollments %}
+                    <tr>
+                      <td>{{ e.student }}</td>
+                      <td>{{ e.created_at|date:"d.m.Y H:i" }}</td>
+                      <td style="width:220px;">
+                        <form method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="enrollment_id" value="{{ e.id }}">
+                          <select class="form-select" name="status" onchange="this.form.submit()">
+                            {% for val,label in e.STATUS_CHOICES %}
+                              <option value="{{ val }}" {% if e.status == val %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                          </select>
+                        </form>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr><td colspan="3" class="text-center text-muted">Записей нет.</td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <a class="btn btn-outline-secondary mt-3" href="{% url 'manage_courses' %}">Назад</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

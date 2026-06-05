@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block title %}Управление — Курсы{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Управление курсами</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">{% include 'manage/_nav.html' %}</div>
+        <div class="col-lg-9">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="fw-semibold">Все курсы</div>
+            <button class="btn btn-primary" type="button" onclick="openModal('addCourseModal')">Добавить курс</button>
+          </div>
+          <div class="card p-0">
+            <div class="table-responsive">
+              <table class="table table-striped align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Название</th>
+                    <th>Направление</th>
+                    <th>Возраст</th>
+                    <th>Цена</th>
+                    <th>Активен</th>
+                    <th>Действия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for c in courses %}
+                    <tr>
+                      <td>{{ c.title }}</td>
+                      <td>{{ c.get_direction_display }}</td>
+                      <td>{{ c.get_age_group_display }}</td>
+                      <td>{{ c.price }} ₽</td>
+                      <td>{% if c.is_active %}Да{% else %}Нет{% endif %}</td>
+                      <td class="text-nowrap">
+                        <a class="btn btn-sm btn-outline-primary" href="{% url 'manage_course_edit' c.id %}">Редактировать</a>
+                        <a class="btn btn-sm btn-outline-danger" onclick="return confirm('Вы уверены?')" href="{% url 'manage_course_delete' c.id %}">Удалить</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'manage_course_enrollments' c.id %}">Просмотреть записи</a>
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr><td colspan="6" class="text-center text-muted">Курсов нет.</td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Модальное окно (простое: style.display) -->
+  <div class="simple-modal-backdrop" id="addCourseModal" style="display:none;">
+    <div class="simple-modal">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="fw-semibold">Добавить курс</div>
+        <button class="btn btn-sm btn-outline-secondary" type="button" onclick="closeModal('addCourseModal')">×</button>
+      </div>
+      <form method="post" enctype="multipart/form-data" action="{% url 'manage_course_add' %}">
+        {% csrf_token %}
+        <div class="row g-3">
+          <div class="col-md-8">
+            <label class="form-label">Название</label>
+            <input class="form-control" name="title" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Цена</label>
+            <input class="form-control" name="price" type="number" min="0" value="0" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Возраст</label>
+            <select class="form-select" name="age_group" required>
+              {% for val,label in courses.model.AGE_CHOICES %}
+                <option value="{{ val }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Направление</label>
+            <select class="form-select" name="direction" required>
+              {% for val,label in courses.model.DIRECTION_CHOICES %}
+                <option value="{{ val }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Короткое описание</label>
+            <input class="form-control" name="short_description" maxlength="300" required>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Описание</label>
+            <textarea class="form-control" name="description" rows="5" required></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Расписание</label>
+            <textarea class="form-control" name="schedule" rows="3"></textarea>
+          </div>
+          <div class="col-md-8">
+            <label class="form-label">Картинка</label>
+            <input class="form-control" name="image" type="file">
+          </div>
+          <div class="col-md-4 d-flex align-items-end">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="is_active" checked>
+              <label class="form-check-label">Активно</label>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn btn-primary" type="submit">Сохранить</button>
+          <button class="btn btn-outline-secondary" type="button" onclick="closeModal('addCourseModal')">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "block";
+    }
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "none";
+    }
+  </script>
+{% endblock %}
+

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Управление — Добавить курс{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Добавить курс</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">{% include 'manage/_nav.html' %}</div>
+        <div class="col-lg-9">
+          <div class="card p-4">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-md-8">
+                  <label class="form-label">Название</label>
+                  {{ form.title }}
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Цена</label>
+                  {{ form.price }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Возраст</label>
+                  {{ form.age_group }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Направление</label>
+                  {{ form.direction }}
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Короткое описание</label>
+                  {{ form.short_description }}
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Описание</label>
+                  {{ form.description }}
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Расписание</label>
+                  {{ form.schedule }}
+                </div>
+                <div class="col-md-8">
+                  <label class="form-label">Картинка</label>
+                  {{ form.image }}
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                  <div class="form-check">
+                    {{ form.is_active }}
+                    <label class="form-check-label">Активно</label>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-primary mt-3" type="submit">Сохранить</button>
+              <a class="btn btn-outline-secondary mt-3" href="{% url 'manage_courses' %}">Назад</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

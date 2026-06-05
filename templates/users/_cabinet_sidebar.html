@@ -1,0 +1,5 @@
+<div class="list-group">
+  <a class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'cabinet_profile' %}active{% endif %}" href="{% url 'cabinet_profile' %}">Мои данные</a>
+  <a class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'cabinet_works' %}active{% endif %}" href="{% url 'cabinet_works' %}">Мои работы</a>
+</div>
+

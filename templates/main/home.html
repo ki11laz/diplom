@@ -1,0 +1,365 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+{% block title %}Главная — Карандаш{% endblock %}
+
+
+
+{% block content %}
+
+  <section class="hero">
+
+    <div class="container">
+
+      <div class="row align-items-center g-4">
+
+        <div class="col-lg-6">
+
+          <p class="hero-kicker mb-2">Художественная школа в Чите</p>
+
+          <h1 class="mb-3">Карандаш — место, где талант становится навыком</h1>
+
+          <p class="lead mb-4">Рисунок, живопись и композиция для детей и подростков. Тёплая атмосфера, понятные шаги и видимый прогресс.</p>
+
+          <div class="d-flex gap-2 flex-wrap">
+
+            <a class="btn btn-primary btn-lg" href="#applyForm">Записаться на пробное занятие</a>
+
+            <a class="btn btn-outline-primary btn-lg" href="{% url 'courses' %}">Смотреть курсы</a>
+
+          </div>
+
+        </div>
+
+        {% if drawing_of_the_day %}
+
+          <div class="col-lg-6">
+
+            <div class="hero-drawing">
+
+              <div class="hero-drawing-label">Рисунок дня</div>
+
+              <div class="hero-photo">
+
+                <img src="{{ drawing_of_the_day.image.url }}" alt="{{ drawing_of_the_day.title }}">
+
+              </div>
+
+              <div class="hero-drawing-caption">
+
+                <span class="fw-semibold">{{ drawing_of_the_day.title }}</span>
+
+                <span class="text-muted"> — {{ drawing_of_the_day.author_display }}</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="py-5">
+
+    <div class="container">
+
+      <h2 class="section-title">О школе</h2>
+
+      <p>
+
+        «Карандаш» — художественная школа в Чите, где дети и подростки учатся рисовать
+
+        в спокойной и дружелюбной атмосфере. Мы не гонимся за скоростью: важнее,
+
+        чтобы ученик понял основы и почувствовал уверенность в своих работах.
+
+      </p>
+
+      <p class="text-muted">
+
+        На занятиях разбираем натюрморт, портрет, пейзаж, работу с цветом и композицией.
+
+        Преподаём рисунок, живопись, акварель и другие техники — для разных возрастов,
+
+        от начинающих до продолжающих. Каждый месяц ученики добавляют новые работы
+
+        в портфолио, а лучшие из них попадают в галерею на сайте.
+
+      </p>
+
+      <p class="text-muted mb-0">
+
+        Занятия ведут педагоги-практики: объясняем просто и по делу, без лишнего стресса.
+
+        Группы небольшие — у каждого хватает внимания преподавателя. Перед записью
+
+        на курс можно прийти на пробное занятие и познакомиться со школой лично.
+
+      </p>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="py-5 section-alt">
+
+    <div class="container">
+
+      <h2 class="section-title">Популярные курсы</h2>
+
+      <div class="row g-4">
+
+        {% for c in popular_courses %}
+
+          <div class="col-md-4">
+
+            <div class="card card-interactive h-100">
+
+              {% if c.image %}<img src="{{ c.image.url }}" class="card-img-top" alt="">{% endif %}
+
+              <div class="card-body">
+
+                <h5 class="card-title">{{ c.title }}</h5>
+
+                <p class="text-muted mb-2">{{ c.short_description }}</p>
+
+                <div class="fw-semibold mb-3">{{ c.price }} ₽</div>
+
+                <a class="btn btn-primary btn-sm" href="{% url 'course_detail' c.slug %}">Подробнее</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        {% empty %}
+
+          <div class="col-12 text-muted">Пока нет курсов.</div>
+
+        {% endfor %}
+
+      </div>
+
+      <div class="mt-4">
+
+        <a class="btn btn-outline-primary" href="{% url 'courses' %}">Все курсы</a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="py-5">
+
+    <div class="container">
+
+      <h2 class="section-title">Новости</h2>
+
+      <div class="row g-4">
+
+        {% for n in last_news %}
+
+          <div class="col-md-4">
+
+            <div class="card card-interactive h-100">
+
+              {% if n.image %}<img src="{{ n.image.url }}" class="card-img-top" alt="">{% endif %}
+
+              <div class="card-body">
+
+                <div class="text-muted small mb-1">{{ n.created_at|date:"d.m.Y" }}</div>
+
+                <h5 class="card-title">{{ n.title }}</h5>
+
+                <p class="text-muted mb-3">{{ n.short_text }}</p>
+
+                <a class="stretched-link" href="{% url 'news_detail' n.slug %}">Читать</a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        {% empty %}
+
+          <div class="col-12 text-muted">Новостей пока нет.</div>
+
+        {% endfor %}
+
+      </div>
+
+      <div class="mt-4">
+
+        <a class="btn btn-outline-primary" href="{% url 'news' %}">Все новости</a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="py-5 section-alt">
+
+    <div class="container">
+
+      <h2 class="section-title">Галерея</h2>
+
+      <div class="row g-3">
+
+        {% for w in gallery_items %}
+
+          <div class="col-6 col-lg-3">
+
+            <figure class="gallery-item mb-0">
+
+              <img src="{{ w.image.url }}" alt="{{ w.title }}">
+
+              <figcaption>
+
+                <span class="gallery-item-title">{{ w.title }}</span>
+
+                <span class="gallery-item-author">{{ w.author_display }}</span>
+
+              </figcaption>
+
+            </figure>
+
+          </div>
+
+        {% empty %}
+
+          <div class="col-12 text-muted">Работ пока нет.</div>
+
+        {% endfor %}
+
+      </div>
+
+      <div class="mt-4">
+
+        <a class="btn btn-outline-primary" href="{% url 'gallery' %}">Смотреть все работы</a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="py-5 apply-section" id="applyForm">
+
+    <div class="container">
+
+      <div class="text-center mb-4">
+
+        <h2 class="section-title section-title-center">Заявка на обучение</h2>
+
+        {% if selected_course %}
+
+          <p class="text-muted mb-0">Курс: <strong>{{ selected_course.title }}</strong></p>
+
+        {% else %}
+
+          <p class="text-muted mb-0">Оставьте контакты — мы перезвоним и подберём подходящий курс</p>
+
+        {% endif %}
+
+      </div>
+
+      <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+          <div class="card p-4">
+
+            {% if success %}
+
+              <div class="alert alert-success mb-0">Спасибо, мы свяжемся с вами</div>
+
+            {% else %}
+
+              <form method="post">
+
+                {% csrf_token %}
+
+                {% if selected_course %}
+
+                  <input type="hidden" name="course_id" value="{{ selected_course.id }}">
+
+                {% endif %}
+
+                <div class="row g-3">
+
+                  <div class="col-md-4">
+
+                    <label class="form-label">Имя</label>
+
+                    {{ form.name }}
+
+                  </div>
+
+                  <div class="col-md-4">
+
+                    <label class="form-label">Телефон</label>
+
+                    {{ form.phone }}
+
+                  </div>
+
+                  <div class="col-md-4">
+
+                    <label class="form-label">Email (необязательно)</label>
+
+                    {{ form.email }}
+
+                  </div>
+
+                  <div class="col-12">
+
+                    <label class="form-label">Сообщение (необязательно)</label>
+
+                    {{ form.message }}
+
+                  </div>
+
+                </div>
+
+                <button class="btn btn-primary mt-3" type="submit">Отправить</button>
+
+              </form>
+
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+{% endblock %}
+
+

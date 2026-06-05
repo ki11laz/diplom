@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Управление — Отправить уведомление{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Отправка уведомлений</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">{% include 'manage/_nav.html' %}</div>
+        <div class="col-lg-9">
+          <div class="card p-4">
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label">Получатель</label>
+                {{ form.recipient }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Заголовок</label>
+                {{ form.title }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Текст сообщения</label>
+                {{ form.text }}
+              </div>
+              <button class="btn btn-primary" type="submit">Отправить</button>
+              <a class="btn btn-outline-secondary" href="{% url 'manage_dashboard' %}">Назад</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

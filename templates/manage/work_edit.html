@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Управление — Редактировать работу{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Редактировать работу</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">{% include 'manage/_nav.html' %}</div>
+        <div class="col-lg-9">
+          <div class="card p-4">
+            <div class="mb-3">
+              <img src="{{ work.image.url }}" alt="" style="width:100%;max-height:320px;object-fit:cover;border-radius:14px;">
+            </div>
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Название</label>
+                  {{ form.title }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Картинка</label>
+                  {{ form.image }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Автор (пользователь)</label>
+                  {{ form.student }}
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Техника</label>
+                  {{ form.technique }}
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Курс</label>
+                  {{ form.course }}
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Статус</label>
+                  {{ form.status }}
+                </div>
+                <div class="col-12">
+                  <div class="form-check">
+                    {{ form.is_visible }}
+                    <label class="form-check-label">Показывать в галерее</label>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-primary mt-3" type="submit">Сохранить</button>
+              <a class="btn btn-outline-secondary mt-3" href="{% url 'manage_gallery' %}">Назад</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Контакты — Карандаш{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Контакты</h2>
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="card p-4">
+            <div class="fw-semibold mb-2">Адрес</div>
+            <div class="text-muted">Россия, Забайкальский край, г. Чита, ул. Шилкинская, 8</div>
+            <hr>
+            <div class="fw-semibold mb-2">Телефон</div>
+            <div class="text-muted">+7 (924) 479-23-73</div>
+            <hr>
+            <div class="fw-semibold mb-2">Email</div>
+            <div class="text-muted">info@karandash.ru</div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card p-4 h-100">
+            <div class="fw-semibold mb-2">Мы на карте</div>
+            <div class="ratio ratio-4x3 rounded-4 overflow-hidden border" style="border-color: rgba(20,20,20,.10) !important;">
+              <iframe
+                title="Карта — ул. Шилкинская, 8, Чита"
+                src="https://yandex.ru/map-widget/v1/?text=%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F%2C%20%D0%97%D0%B0%D0%B1%D0%B0%D0%B9%D0%BA%D0%B0%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BA%D1%80%D0%B0%D0%B9%2C%20%D0%A7%D0%B8%D1%82%D0%B0%2C%20%D1%83%D0%BB.%20%D0%A8%D0%B8%D0%BB%D0%BA%D0%B8%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2C%208&z=16"
+                frameborder="0"
+                allowfullscreen="true"
+                style="width:100%;height:100%;border:0;"
+              ></iframe>
+            </div>
+            <div class="text-muted small mt-2">Адрес: Россия, Забайкальский край, г. Чита, ул. Шилкинская, 8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

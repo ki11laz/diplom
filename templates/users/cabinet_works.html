@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Личный кабинет — Мои работы{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Личный кабинет</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">
+          {% include 'users/_cabinet_sidebar.html' %}
+        </div>
+        <div class="col-lg-9">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0">Мои работы</h4>
+            <a class="btn btn-primary" href="{% url 'work_upload' %}">Загрузить работу</a>
+          </div>
+
+          <div class="row g-3">
+            {% for w in works %}
+              <div class="col-md-6">
+                <div class="card h-100">
+                  <img src="{{ w.image.url }}" alt="" style="height:220px;object-fit:cover;border-radius:14px 14px 0 0;">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                      <div>
+                        <h5 class="mb-1">{{ w.title }}</h5>
+                        <div class="text-muted small">
+                          {% if w.course %}Курс: {{ w.course.title }}{% else %}Без курса{% endif %}
+                        </div>
+                      </div>
+                      <span class="badge bg-{% if w.status == 'pending' %}warning{% elif w.status == 'approved' %}success{% else %}danger{% endif %}">
+                        {{ w.get_status_display }}
+                      </span>
+                    </div>
+                    {% if w.description %}
+                      <div class="text-muted mt-2">{{ w.description|truncatechars:120 }}</div>
+                    {% endif %}
+                    {% if w.status != 'approved' %}
+                      <a class="btn btn-outline-danger mt-3"
+                         onclick="return confirm('Вы уверены?')"
+                         href="{% url 'work_delete' w.id %}">Удалить</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col-12 text-muted text-center">Работ пока нет.</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

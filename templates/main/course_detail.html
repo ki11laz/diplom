@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{{ course.title }} — Карандаш{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="card">
+            {% if course.image %}
+              <img src="{{ course.image.url }}" alt="" style="width:100%;height:380px;object-fit:cover;border-radius:14px;">
+            {% else %}
+              <div class="p-5 text-center text-muted">Нет изображения</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <h2 class="mb-2">{{ course.title }}</h2>
+          <div class="text-muted mb-3">{{ course.short_description }}</div>
+          <div class="fw-semibold fs-4 mb-3">{{ course.price }} ₽</div>
+
+          <div class="card p-3 mb-3">
+            <div><span class="fw-semibold">Возраст:</span> {{ course.get_age_group_display }}</div>
+            <div><span class="fw-semibold">Направление:</span> {{ course.get_direction_display }}</div>
+            <div class="mt-2"><span class="fw-semibold">Расписание:</span><br>{{ course.schedule|linebreaksbr }}</div>
+          </div>
+
+          <a class="btn btn-primary" href="{% url 'home' %}?course={{ course.id }}#applyForm">Оставить заявку</a>
+          {% if not is_student %}
+            <div class="small text-muted mt-2">Заявку можно оставить без входа.</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card p-4 mt-4">
+        <h5 class="mb-3">Описание</h5>
+        <div class="text-muted">{{ course.description|linebreaksbr }}</div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

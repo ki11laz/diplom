@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Управление — Добавить новость{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Добавить новость</h2>
+      <div class="row g-3">
+        <div class="col-lg-3">{% include 'manage/_nav.html' %}</div>
+        <div class="col-lg-9">
+          <div class="card p-4">
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label">Заголовок</label>
+                {{ form.title }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Краткий текст</label>
+                {{ form.short_text }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Текст</label>
+                {{ form.text }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Картинка</label>
+                {{ form.image }}
+              </div>
+              <div class="form-check">
+                {{ form.is_published }}
+                <label class="form-check-label">Опубликована</label>
+              </div>
+              <button class="btn btn-primary mt-3" type="submit">Сохранить</button>
+              <a class="btn btn-outline-secondary mt-3" href="{% url 'manage_news' %}">Назад</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

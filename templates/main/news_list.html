@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Новости — Карандаш{% endblock %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="section-title">Новости</h2>
+      <div class="row g-3">
+        {% for n in page_obj %}
+          <div class="col-md-4">
+            <div class="card card-interactive h-100">
+              {% if n.image %}<img src="{{ n.image.url }}" class="card-img-top" alt="">{% endif %}
+              <div class="card-body">
+                <div class="text-muted small mb-1">{{ n.created_at|date:"d.m.Y" }}</div>
+                <h5 class="card-title">{{ n.title }}</h5>
+                <p class="text-muted mb-3">{{ n.short_text }}</p>
+                <a class="stretched-link" href="{% url 'news_detail' n.slug %}">Читать</a>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 text-muted text-center">Новостей пока нет.</div>
+        {% endfor %}
+      </div>
+
+      {% if page_obj.paginator.num_pages > 1 %}
+        <nav class="mt-4">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Назад</a></li>
+            {% endif %}
+            <li class="page-item disabled"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Вперёд</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
+
