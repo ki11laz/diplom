@@ -1,0 +1,9 @@
+asgiref==3.11.1
+Django==4.2
+gunicorn==23.0.0
+sqlparse==0.5.5
+tzdata==2026.2
+whitenoise
+bleach
+setuptools>=65.0.0
+wheel
